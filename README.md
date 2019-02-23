@@ -1,3 +1,6 @@
+
+## Getting started
+```bush
 // install dependencies
 npm install
 
