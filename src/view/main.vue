@@ -10,6 +10,7 @@
         </div>
         <div class="fr" style="width: 500px">
           <router-link to="/uploadGoods" style="color: #fff;" v-if="userName !== ''">uploadGoods</router-link>
+          <router-link to="/index" style="margin-left: 20px;color: #fff;font-size:20px"><Icon type="ios-home" /></router-link>
         </div>
       </div>
     </div>
