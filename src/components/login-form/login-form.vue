@@ -1,21 +1,22 @@
 <template>
   <Form ref="loginForm" :model="form" :rules="rules" @keydown.enter.native="handleSubmit">
     <FormItem prop="userName">
-      <Input v-model="form.userName" placeholder="请输入用户名">
+      <Input v-model="form.userName" placeholder="Enter your userName">
         <span slot="prepend">
           <Icon :size="16" type="ios-person"></Icon>
         </span>
       </Input>
     </FormItem>
     <FormItem prop="password">
-      <Input type="password" v-model="form.password" placeholder="请输入密码">
+      <Input type="password" v-model="form.password" placeholder="Enter your password">
         <span slot="prepend">
           <Icon :size="14" type="md-lock"></Icon>
         </span>
       </Input>
     </FormItem>
+    <p>sign in by phone</p>
     <FormItem>
-      <Button @click="handleSubmit" type="primary" long>登录</Button>
+      <Button @click="handleSubmit" type="primary" long>sign in</Button>
     </FormItem>
   </Form>
 </template>
@@ -27,7 +28,7 @@ export default {
       type: Array,
       default: () => {
         return [
-          { required: true, message: '账号不能为空', trigger: 'blur' }
+          { required: true, message: 'The userName cannot be empty', trigger: 'blur' }
         ]
       }
     },
@@ -35,7 +36,7 @@ export default {
       type: Array,
       default: () => {
         return [
-          { required: true, message: '密码不能为空', trigger: 'blur' }
+          { required: true, message: 'The password cannot be empty', trigger: 'blur' }
         ]
       }
     }
@@ -43,8 +44,8 @@ export default {
   data () {
     return {
       form: {
-        userName: 'jia@qq.com',
-        password: 'qweasd'
+        userName: '',
+        password: ''
       }
     }
   },
