@@ -35,10 +35,10 @@
   <div id="goodsDetail">
     <div class="clear">
       <div v-for="item in goodsDetail.picUrls" :key="item">
-        <div class="goodsImg">
-          <img :src="baseFileUrl + item">
-        </div>
-      </div>
+            <div class="goodsImg">
+              <img :src="baseFileUrl + item">
+            </div>
+          </div>
       <div>
         <p class="name">name：{{goodsDetail.name}}</p>
         <p class="desc">desc：{{goodsDetail.desc}}</p>
@@ -63,15 +63,7 @@
       <Input v-model="comment" type="textarea" placeholder="Enter something comment..."/>
       <Button style="margin-top: 20px;" type="primary" @click="commentSubmit">Submit</Button>
     </div>
-    <Modal
-      v-model="borrow"
-      title="Borrow good"
-      :loading="borrowLoading"
-      @on-ok="ok"
-      @on-cancel="cancel"
-      okText="ok"
-      cancelText="cancel"
-    >
+    <Modal v-model="borrow" title="Borrow good" :loading="borrowLoading" @on-ok="ok" @on-cancel="cancel" okText="ok" cancelText="cancel">
       <div style="margin-top: 15px;">
         <span class="label">Rented good：</span>
         <span>{{goodsDetail.name}}</span>
@@ -88,16 +80,13 @@
         ></DatePicker>
       </div>
       <div style="margin-top: 15px;">
-        <span class="label">rentalCost：</span>
-        {{goodsDetail.rentalCost * totalDays}}
+        <span class="label">rentalCost：</span>{{goodsDetail.rentalCost * totalDays}}
+      </div>
+       <div style="margin-top: 15px;">
+        <span class="label">deposit：</span>{{goodsDetail.deposit}}
       </div>
       <div style="margin-top: 15px;">
-        <span class="label">deposit：</span>
-        {{goodsDetail.deposit}}
-      </div>
-      <div style="margin-top: 15px;">
-        <span class="label">total price：</span>
-        {{goodsDetail.deposit + goodsDetail.rentalCost * totalDays}}
+        <span class="label">total price：</span>{{goodsDetail.deposit + goodsDetail.rentalCost * totalDays}}
       </div>
       <div class="pay-type">
         <span class="label">payType：</span>
@@ -169,12 +158,11 @@ export default {
       comment(self.goodsId, { comment: self.comment })
         .then(function(res) {
           console.log("comment", res.data);
-          self.comment = "";
+          self.comment = '';
           self.getCommentList();
         })
         .catch(function(error) {
-          console.log(error);
-          console.log(1);
+          console.log(1112)
         });
     },
     format(time) {
@@ -185,49 +173,47 @@ export default {
     },
     countDays() {
       let self = this;
-      let time_interval =
-        new Date(self.rentalTime[1]) - new Date(self.rentalTime[0]);
-      return (self.totalDays = time_interval / 86400000 + 1);
+      let time_interval = new Date(self.rentalTime[1]) - new Date(self.rentalTime[0])
+      return self.totalDays = time_interval/86400000 + 1;
     },
     ok() {
       let self = this;
-      if (self.rentalTime[0] === "") {
-        this.$Message.error("please choose rentalTime");
-        self.borrowLoading = false;
-        setTimeout(() => {
-          self.borrowLoading = true;
-        }, 0);
-        return;
+      if(self.rentalTime[0] === '') {
+         this.$Message.error('please choose rentalTime');
+         self.borrowLoading = false;
+         setTimeout(()=>{
+           self.borrowLoading = true;
+         },0)
+         return;
       }
-      console.log(self.curPayType);
-      if (self.curPayType === "") {
-        this.$Message.error("please choose payType");
-        self.borrowLoading = false;
-        setTimeout(() => {
-          self.borrowLoading = true;
-        }, 0);
-        return;
+      console.log(self.curPayType)
+      if(self.curPayType === '') {
+        this.$Message.error('please choose payType');
+         self.borrowLoading = false;
+         setTimeout(()=>{
+           self.borrowLoading = true;
+         },0)
+         return;
       }
       self.countDays();
       order({
-        goodsId: self.goodsId,
-        payType: self.curPayType,
-        rentStart: `${new Date(self.rentalTime[0]).getFullYear()}-${new Date(
-          self.rentalTime[0]
-        ).getMonth() + 1}-${new Date(self.rentalTime[0]).getDate()}`,
-        rentEnd: `${new Date(self.rentalTime[1]).getFullYear()}-${new Date(
-          self.rentalTime[1]
-        ).getMonth() + 1}-${new Date(self.rentalTime[1]).getDate()}`
-      })
+          goodsId: self.goodsId,
+          payType: self.curPayType,
+          rentStart: `${new Date(self.rentalTime[0]).getFullYear()}-${new Date(self.rentalTime[0]).getMonth() + 1}-${new Date(self.rentalTime[0]).getDate()}`,
+          rentEnd: `${new Date(self.rentalTime[1]).getFullYear()}-${new Date(self.rentalTime[1]).getMonth() + 1}-${new Date(self.rentalTime[1]).getDate()}`,
+        })
         .then(function(res) {
           console.log(res);
           self.borrow = false;
+
         })
         .catch(function(error) {
           console.log(error);
         });
     },
-    cancel() {}
+    cancel() {
+
+    }
   },
   mounted() {
     this.goodsId = this.$route.params.id;

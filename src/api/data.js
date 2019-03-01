@@ -7,6 +7,15 @@ export const getTableData = () => {
   })
 }
 
+//注册
+export const signUp = (data) => {
+  return axios.request({
+    url: '/auth/sign-up',
+    method: 'post',
+    data
+  })
+}
+
 //获取商品类型列表
 export const getGoodsType = () => {
   return axios.request({

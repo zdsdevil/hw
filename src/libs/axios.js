@@ -20,7 +20,7 @@ class HttpRequest {
   }
   getInsideConfig () {
     const config = {
-      baseURL: '',
+      baseURL: process.env.NODE_ENV === 'development' ? '' : 'http://47.107.166.120:8000/hw/',
       headers: {
         //
       }
@@ -48,11 +48,10 @@ class HttpRequest {
       const { data, status } = res
       return { data, status }
     }, error => {
-        console.log(error.response)
-      // if (error.response.data.msg === 'token invalid or missing, please login!') {
-      //   setToken('');
-      //   this.$router.push('/login');
-      // }
+      console.log('error', error.response.data)
+      if (error.response.data.msg === 'token invalid or missing, please login!') {
+        setToken('');
+      }
       this.destroy(url)
       let errorInfo = error.response
       if (!errorInfo) {
@@ -64,7 +63,7 @@ class HttpRequest {
         }
       }
       addErrorLog(errorInfo)
-      return Promise.reject(error)
+      return Promise.reject(error.response)
     })
   }
   request (options) {

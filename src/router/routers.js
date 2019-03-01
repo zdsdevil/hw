@@ -1,5 +1,4 @@
-import Main from '@/components/main'
-import Main2 from '@/view/main.vue'
+import Main from '@/view/main.vue'
 
 /**
  * iview-admin中meta除了原生参数外可配置的参数:
@@ -23,8 +22,17 @@ export default [
     redirect: 'index'
   },
   {
+    path: '/login',
+    name: 'login',
+    meta: {
+      title: 'Login',
+      hideInMenu: true
+    },
+    component: () => import(/* webpackChunkName: "login" */'@/view/login/login.vue')
+  },
+  {
     path: '/',
-    component: Main2,
+    component: Main,
     children: [
       {
         path: 'index',
@@ -33,22 +41,13 @@ export default [
           title: 'index',
           hideInMenu: true
         },
-        component: () => import('@/view/index.vue')
+        component: () => import(/* webpackChunkName: "index" */'@/view/index.vue')
       }
     ]
   },
   {
-    path: '/login',
-    name: 'login',
-    meta: {
-      title: 'Login - 登录',
-      hideInMenu: true
-    },
-    component: () => import('@/view/login/login.vue')
-  },
-  {
     path: '/',
-    component: Main2,
+    component: Main,
     children: [{
       path: 'uploadGoods',
       name: 'uploadGoods',
@@ -56,12 +55,12 @@ export default [
         icon: 'logo-buffer',
         title: 'uploadGoods'
       },
-      component: () => import('@/view/uploadGoods.vue')
+      component: () => import(/* webpackChunkName: "uploadGoods" */'@/view/uploadGoods.vue')
     }]
   },
   {
     path: '/',
-    component: Main2,
+    component: Main,
     children: [{
       path: 'detail/:id',
       name: 'goodsDetail',
@@ -69,31 +68,7 @@ export default [
         icon: 'logo-buffer',
         title: 'goodsDetail'
       },
-      component: () => import('@/view/goodsDetail.vue')
+      component: () => import(/* webpackChunkName: "goodsDetail" */'@/view/goodsDetail.vue')
     }]
-  },
-  {
-    path: '/401',
-    name: 'error_401',
-    meta: {
-      hideInMenu: true
-    },
-    component: () => import('@/view/error-page/401.vue')
-  },
-  {
-    path: '/500',
-    name: 'error_500',
-    meta: {
-      hideInMenu: true
-    },
-    component: () => import('@/view/error-page/500.vue')
-  },
-  {
-    path: '*',
-    name: 'error_404',
-    meta: {
-      hideInMenu: true
-    },
-    component: () => import('@/view/error-page/404.vue')
   }
 ]
