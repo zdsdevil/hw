@@ -72,7 +72,7 @@
         multiple
         :headers="headers"
         type="drag"
-        action="/security/pic"
+        action="hw/security/pic"
         style="display: inline-block;width:100px;"
       >
         <div style="width: 100px;height:100px;line-height: 100px;">
@@ -124,25 +124,25 @@
   </div>
 </template>
 <script>
-import { getGoodsType, uploadGoods } from "@/api/data";
-import { getToken } from "@/libs/util";
+import { getGoodsType, uploadGoods } from '@/api/data'
+import { getToken } from '@/libs/util'
 
 export default {
-  data() {
+  data () {
     return {
       headers: {},
       formValidate: {
-        addr: "",
-        deposit: "",
-        desc: "",
-        name: "",
-        rentalCost: "",
-        type: "",
-        city: ""
+        addr: '',
+        deposit: '',
+        desc: '',
+        name: '',
+        rentalCost: '',
+        type: '',
+        city: ''
       },
       goodsTypeList: [],
       defaultList: [],
-      imgName: "",
+      imgName: '',
       visible: false,
       uploadList: [],
       cur_uploadImg: null,
@@ -150,40 +150,40 @@ export default {
         deposit: [
           {
             required: true,
-            message: "deposit cannot be empty",
-            trigger: "blur"
+            message: 'deposit cannot be empty',
+            trigger: 'blur'
           }
         ],
         name: [
           {
             required: true,
-            message: "The name cannot be empty",
-            trigger: "blur"
+            message: 'The name cannot be empty',
+            trigger: 'blur'
           }
         ],
         rentalCost: [
           {
             required: true,
-            message: "rentalCost cannot be empty",
-            trigger: "blur"
+            message: 'rentalCost cannot be empty',
+            trigger: 'blur'
           }
         ]
       }
-    };
+    }
   },
   methods: {
-    handleSubmit(name) {
-      let self = this;
+    handleSubmit (name) {
+      let self = this
       if (self.uploadList.length === 0) {
-        self.$Message.error("Please upload at least one picture");
-        return;
+        self.$Message.error('Please upload at least one picture')
+        return
       }
       self.$refs[name].validate(valid => {
         if (valid) {
           let picUrls = self.uploadList.map(item => {
-            return item.name;
-          });
-          console.log(picUrls);
+            return item.name
+          })
+          console.log(picUrls)
           uploadGoods({
             addr: self.formValidate.addr,
             deposit: parseFloat(self.formValidate.deposit),
@@ -193,70 +193,70 @@ export default {
             type: parseFloat(self.formValidate.type),
             picUrls: picUrls
           })
-            .then(function(res) {
-              console.log("res", res.data);
-              if (res.data.msg === "success") {
-                self.$Message.success(res.data.msg);
-                self.handleReset("formValidate");
-                self.$refs.upload.fileList.splice(0, self.$refs.upload.fileList.length);
+            .then(function (res) {
+              console.log('res', res.data)
+              if (res.data.msg === 'success') {
+                self.$Message.success(res.data.msg)
+                self.handleReset('formValidate')
+                self.$refs.upload.fileList.splice(0, self.$refs.upload.fileList.length)
               } else {
-                self.$Message.error(res.data.msg);
+                self.$Message.error(res.data.msg)
               }
             })
-            .catch(function(error) {
-              console.log(error);
-            });
+            .catch(function (error) {
+              console.log(error)
+            })
         }
-      });
+      })
     },
-    handleReset(name) {
-      this.$refs[name].resetFields();
+    handleReset (name) {
+      this.$refs[name].resetFields()
     },
-    handleView(name) {
-      this.imgName = name;
-      this.visible = true;
+    handleView (name) {
+      this.imgName = name
+      this.visible = true
     },
-    handleRemove(file) {
-      const fileList = this.$refs.upload.fileList;
-      this.$refs.upload.fileList.splice(fileList.indexOf(file), 1);
+    handleRemove (file) {
+      const fileList = this.$refs.upload.fileList
+      this.$refs.upload.fileList.splice(fileList.indexOf(file), 1)
     },
-    handleSuccess(res, file) {
-      file.url = "http://47.107.166.120:8000/hw/files/" + res.data;
-      file.name = res.data;
+    handleSuccess (res, file) {
+      file.url = 'http://47.107.166.120:8000/hw/files/' + res.data
+      file.name = res.data
     },
-    handleFormatError(file) {
+    handleFormatError (file) {
       this.$Notice.warning({
-        title: "The file format is incorrect",
+        title: 'The file format is incorrect',
         desc:
-          "File format of " +
+          'File format of ' +
           file.name +
-          " is incorrect, please select jpg or png."
-      });
+          ' is incorrect, please select jpg or png.'
+      })
     },
-    handleMaxSize(file) {
+    handleMaxSize (file) {
       this.$Notice.warning({
-        title: "Exceeding file size limit",
-        desc: "File  " + file.name + " is too large, no more than 2M."
-      });
+        title: 'Exceeding file size limit',
+        desc: 'File  ' + file.name + ' is too large, no more than 2M.'
+      })
     },
-    handleBeforeUpload() {
-      const check = this.uploadList.length < 5;
+    handleBeforeUpload () {
+      const check = this.uploadList.length < 5
       if (!check) {
         this.$Notice.warning({
-          title: "Up to five pictures can be uploaded."
-        });
+          title: 'Up to five pictures can be uploaded.'
+        })
       }
-      return check;
+      return check
     }
   },
-  mounted() {
-    let self = this;
-    self.headers["hw-token"] = getToken();
-    self.uploadList = self.$refs.upload.fileList;
+  mounted () {
+    let self = this
+    self.headers['hw-token'] = getToken()
+    self.uploadList = self.$refs.upload.fileList
     getGoodsType().then(res => {
-      console.log(res);
-      self.goodsTypeList = res.data.data;
-    });
+      console.log(res)
+      self.goodsTypeList = res.data.data
+    })
   }
-};
+}
 </script>
