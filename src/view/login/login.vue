@@ -88,8 +88,8 @@ export default {
   },
   methods: {
     ...mapActions(["handleLogin"]),
-    handleSubmit({ userName, password }) {
-      this.handleLogin({ userName, password }).then(res => {
+    handleSubmit({ userName, password, type }) {
+      this.handleLogin({ userName, password, type }).then(res => {
         this.$router.push("/index");
       });
     },

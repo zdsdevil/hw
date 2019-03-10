@@ -74,12 +74,13 @@ export default {
   },
   actions: {
     // 登录
-    handleLogin ({ commit }, { userName, password }) {
+    handleLogin ({ commit }, { userName, password, type }) {
       userName = userName.trim()
       return new Promise((resolve, reject) => {
         login({
           userName,
-          password
+          password,
+          type
         }).then(res => {
           const data = res.data
           sessionStorage.userName = data.data.firstName + ' ' + data.data.lastName;

@@ -1,7 +1,7 @@
 <template>
   <Form ref="loginForm" :model="form" :rules="rules" @keydown.enter.native="handleSubmit">
     <FormItem prop="userName">
-      <Input v-model="form.userName" placeholder="Enter your userName">
+      <Input v-model="form.userName" :placeholder="form.userNamePlaceholder">
         <span slot="prepend">
           <Icon :size="16" type="ios-person"></Icon>
         </span>
@@ -14,7 +14,7 @@
         </span>
       </Input>
     </FormItem>
-    <p>sign in by phone</p>
+    <a @click="changeType">sign in by {{form.signInType === 'email' ? 'phone' : 'email'}}</a>
     <FormItem>
       <Button @click="handleSubmit" type="primary" long>sign in</Button>
     </FormItem>
@@ -45,7 +45,9 @@ export default {
     return {
       form: {
         userName: '',
-        password: ''
+        password: '',
+        signInType: 'email',
+        userNamePlaceholder: 'Enter email'
       }
     }
   },
@@ -58,12 +60,22 @@ export default {
     }
   },
   methods: {
+    changeType() {
+      if(this.form.signInType === 'email') {
+        this.form.signInType = 'phone';
+      } else {
+        this.form.signInType = 'email';
+      }
+      this.form.userNamePlaceholder = 'Enter ' + this.form.signInType;
+      this.$refs['loginForm'].resetFields();
+    },
     handleSubmit () {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.$emit('on-success-valid', {
             userName: this.form.userName,
-            password: this.form.password
+            password: this.form.password,
+            type: this.form.signInType
           })
         }
       })
